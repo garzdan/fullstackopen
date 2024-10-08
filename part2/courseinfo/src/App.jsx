@@ -1,36 +1,10 @@
-const Course = ({ course }) => {
+import { Course } from "./components/Course";
+
+const Title = ({ text }) => {
   return (
-    <>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-    </>
+    <h1>{text}</h1>
   );
 };
-
-const Content = ({ parts }) => {
-  const total = parts.reduce((exerciseSum, part) => exerciseSum + part.exercises, 0);
-
-  return (
-    <>
-      {parts.map((part) =>
-        <Part key={part.id} part={part} />
-      )}
-      <p><b>total of {total} exercises</b></p>
-    </>
-  );
-}
-
-const Header = ({ course }) => {
-  return (
-    <h1>{course}</h1>
-  );
-};
-
-const Part = ({ part }) => {
-  return (
-    <p>{part.name} {part.exercises}</p>
-  );
-}
 
 const App = () => {
   const courses = [
@@ -80,6 +54,7 @@ const App = () => {
 
   return (
     <>
+      <Title text="Web development curriculum" />
       {courses.map((course) =>
         <Course key={course.id} course={course} />
       )}
@@ -87,4 +62,4 @@ const App = () => {
   );
 }
 
-export default App
+export default App;
