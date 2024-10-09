@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { PersonFilter } from './components/PersonFilter';
 import { PersonForm } from './components/PersonForm';
 import { Persons} from './components/Persons';
+import { Notification } from './components/Notification';
 import personService from './services/person.js';
 
 const App = () => {
@@ -9,6 +10,10 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [personFilter, setPersonFilter] = useState('');
+  const [notification, setNotification] = useState({
+    message: '',
+    isError: false,
+  });
 
   useEffect(() => {
     personService.getAll().then(persons => {
@@ -51,6 +56,8 @@ const App = () => {
           setPersons(persons.map(person => {
             return person.id !== updatedPerson.id ? person : updatedPerson;
           }));
+
+          showNotification(`Updated ${updatedPerson.name}`)
         });
       }
 
@@ -62,8 +69,21 @@ const App = () => {
       number: newNumber,
     }).then(createdPerson => {
       setPersons([...persons, createdPerson]);
+
+      showNotification(`Added ${createdPerson.name}`)
     });
   };
+
+  const showNotification = (message, isError = false) => {
+    setNotification({ message, isError });
+
+    setTimeout(() => {
+      setNotification({
+        message: '',
+        isError: false,
+      });
+    }, 3000)
+  }
 
   const filteredPersons = personFilter ? persons.filter(
     person => person.name.toLowerCase().includes(personFilter.toLowerCase())
@@ -71,6 +91,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notification.message} isError={notification.isError} />
       <h2>Phonebook</h2>
       <PersonFilter value={personFilter} onChange={handlePersonFilterChange} />
       <h3>Add a new</h3>
