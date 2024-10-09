@@ -29,14 +29,15 @@ const App = () => {
       return;
     }
 
-    setPersons([
-      ...persons,
+    axios.post(
+      `http://localhost:3001/persons`,
       {
-        id: persons.length + 1,
         name: newName,
         number: newNumber,
       }
-    ]);
+    ).then(response => {
+      setPersons([...persons, response.data]);
+    });
   };
 
   const filteredPersons = personFilter ? persons.filter(
