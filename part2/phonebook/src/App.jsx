@@ -16,9 +16,26 @@ const App = () => {
     })
   }, []);
 
-  const handleNameChange = event => setNewName(event.target.value);
-  const handleNumberChange = event => setNewNumber(event.target.value);
-  const handlePersonFilterChange = event => setPersonFilter(event.target.value);
+  const handleNameChange = event => {
+    setNewName(event.target.value);
+  }
+
+  const handleNumberChange = event => {
+    setNewNumber(event.target.value);
+  }
+
+  const handlePersonFilterChange = event => {
+    setPersonFilter(event.target.value);
+  }
+
+  const deletePerson = (person) => {
+    if(confirm(`Delete ${person.name}?`)) {
+      personService.remove(person.id)
+        .then(deletedPerson => {
+          setPersons(persons.filter(person => person.id !== deletedPerson.id));
+        });
+    }
+  }
 
   const handlePersonAdd = event => {
     event.preventDefault();
@@ -54,7 +71,7 @@ const App = () => {
         onSubmit={handlePersonAdd}
       />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} onPersonDelete={deletePerson} />
     </div>
   );
 };

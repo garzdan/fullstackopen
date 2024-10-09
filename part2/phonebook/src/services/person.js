@@ -12,4 +12,14 @@ const create = (data) => {
     .then(response => response.data);
 };
 
-export default { getAll, create };
+const update = (id, data) => {
+  return axios.put(`${baseUri}/${id}`, data)
+    .then(response => response.data);
+}
+
+const remove = (id) => {
+  return axios.delete(`${baseUri}/${id}`)
+    .then(response => response.data);
+}
+
+export default { getAll, create, update, remove };
