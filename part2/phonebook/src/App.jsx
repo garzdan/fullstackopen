@@ -40,16 +40,27 @@ const App = () => {
   const handlePersonAdd = event => {
     event.preventDefault();
 
-    if (persons.find(person => person.name.toLowerCase() === newName.toLowerCase())) {
-      alert(`${newName} is already added to phonebook`);
+    const existingPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase());
+
+    if (existingPerson) {
+      if(confirm(`${newName} is already added to the phonebook, replace the older number with the new one?`)) {
+        personService.update(existingPerson.id, {
+          ...existingPerson,
+          number: newNumber,
+        }).then(updatedPerson => {
+          setPersons(persons.map(person => {
+            return person.id !== updatedPerson.id ? person : updatedPerson;
+          }));
+        });
+      }
 
       return;
     }
 
     personService.create({
-        name: newName,
-        number: newNumber,
-      }).then(createdPerson => {
+      name: newName,
+      number: newNumber,
+    }).then(createdPerson => {
       setPersons([...persons, createdPerson]);
     });
   };
