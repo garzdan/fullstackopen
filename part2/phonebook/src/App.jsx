@@ -38,6 +38,8 @@ const App = () => {
       personService.remove(person.id)
         .then(deletedPerson => {
           setPersons(persons.filter(person => person.id !== deletedPerson.id));
+
+          showNotification(`Deleted ${deletedPerson.name}`);
         });
     }
   }
@@ -58,6 +60,13 @@ const App = () => {
           }));
 
           showNotification(`Updated ${updatedPerson.name}`)
+        }).catch(error => {
+          setPersons(persons.filter(person => person.id !== existingPerson.id));
+
+          showNotification(
+            `Information of ${existingPerson.name} has already been removed from server`,
+            true
+          );
         });
       }
 
