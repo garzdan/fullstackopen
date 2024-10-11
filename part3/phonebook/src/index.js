@@ -26,10 +26,16 @@ let persons = [
     "number": "39-23-6423122"
   }
 ];
+
 const app = express();
 
+morgan.token('req-body', (req) => {
+  return JSON.stringify(req.body);
+});
+
 app.use(express.json());
-app.use(morgan('tiny'));
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-body'));
 
 app.get('/info', (req, res) => {
   res.send(`
