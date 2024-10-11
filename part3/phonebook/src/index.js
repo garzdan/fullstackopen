@@ -55,7 +55,13 @@ app.post('/api/persons', (req, res) => {
 
   if (!body.name || !body.number) {
     return res.status(400).json({
-      error: "person's data are missing"
+      error: "Person's name and number are required"
+    });
+  }
+
+  if (persons.find((person) => person.name === body.name)) {
+    return res.status(400).json({
+      error: `${body.name} is already added to the phonebook`
     });
   }
 
