@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 const PORT = 3001;
 const MAX_ID = 1000000;
@@ -28,6 +29,7 @@ let persons = [
 const app = express();
 
 app.use(express.json());
+app.use(morgan('tiny'));
 
 app.get('/info', (req, res) => {
   res.send(`
