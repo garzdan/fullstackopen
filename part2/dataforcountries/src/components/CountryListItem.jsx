@@ -1,6 +1,6 @@
-const CountryListItem = ({ name }) => {
+const CountryListItem = ({ name, onShow }) => {
   return (
-    <div>{name}</div>
+    <div>{name} <button onClick={onShow}>show</button></div>
   )
 };
 

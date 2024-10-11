@@ -1,11 +1,25 @@
-import CountryListItem from "./CountryListItem.jsx";
+import CountryListItem from './CountryListItem';
 
-const CountryList = ({ countries }) => {
+const CountryList = ({ countries, onCountrySelect }) => {
+  if (!countries || !countries.length) {
+    return null;
+  }
+
+  if (countries.length > 10) {
+    return (
+      <div>Too many matches, specify another filter.</div>
+    );
+  }
+
   return (
     <>
       {
-        countries.map(country =>
-          <CountryListItem key={country.name.common} name={country.name.common} />
+        countries.map(countryName =>
+          <CountryListItem
+            key={countryName}
+            name={countryName}
+            onShow={() => onCountrySelect(countryName)}
+          />
         )
       }
     </>
