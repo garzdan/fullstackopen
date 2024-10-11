@@ -1,6 +1,7 @@
 const express = require('express');
 
 const PORT = 3001;
+const MAX_ID = 1000000;
 
 let persons = [
   {
@@ -24,8 +25,9 @@ let persons = [
     "number": "39-23-6423122"
   }
 ];
-
 const app = express();
+
+app.use(express.json());
 
 app.get('/info', (req, res) => {
   res.send(`
@@ -47,6 +49,26 @@ app.get('/api/persons/:id', (req, res) => {
     res.status(404).end();
   }
 });
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body;
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: "person's data are missing"
+    });
+  }
+
+  const person = {
+    id: String(Math.ceil(Math.random() * MAX_ID)),
+    name: String(body.name),
+    number: String(body.number),
+  };
+
+  persons = [...persons, person];
+
+  res.status(201).json(person);
+})
 
 app.delete('/api/persons/:id', (req, res) => {
   persons = persons.filter((person) => person.id !== req.params.id);
